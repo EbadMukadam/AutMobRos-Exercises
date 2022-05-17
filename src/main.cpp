@@ -21,10 +21,10 @@ int main(int argc, char **argv)
     eeros::logger::Logger log = eeros::logger::Logger::getLogger();
 
     log.info() << "Starting template project...";
-
-    // log.info() << "Initializing hardware...";
-    // eeros::hal::HAL& hal = eeros::hal::HAL::instance();
-    // hal.readConfigFromFile(&argc, argv);
+  
+    log.info() << "Initializing hardware...";
+    eeros::hal::HAL& hal = eeros::hal::HAL::instance();
+    hal.readConfigFromFile(&argc, argv);
 
     log.info() << "Initializing control system...";
     ControlSystem cs(dt);
