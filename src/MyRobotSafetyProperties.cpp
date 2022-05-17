@@ -25,6 +25,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
       startMoving("Start moving"),
       stopMoving("Stop moving"),
       motorsHalted("Motors halted")
+
 {
     eeros::hal::HAL &hal = eeros::hal::HAL::instance();
 
@@ -147,6 +148,6 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
 
     // Define exit function
     exitFunction = ([&](SafetyContext *privateContext) {
-        privateContext->triggerEvent(doSystemOff);
+        privateContext->triggerEvent(abort);
     });
 }
