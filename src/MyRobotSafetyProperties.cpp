@@ -13,7 +13,6 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
       slMotorPowerOn("Motors powered"),
       slSystemMoving("System moving"),
 
-
       abort("Abort"),
       shutdown("Shutdown"),
       doSystemOn("Do system on"),
@@ -25,7 +24,6 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
       startMoving("Start moving"),
       stopMoving("Stop moving"),
       motorsHalted("Motors halted")
-
 {
     eeros::hal::HAL &hal = eeros::hal::HAL::instance();
 
@@ -38,7 +36,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // Declare and add critical inputs
     buttonPause = eeros::hal::HAL::instance().getLogicInput("onBoardButtonPause");
     buttonMode = eeros::hal::HAL::instance().getLogicInput("onBoardButtonMode");
-    
+
     criticalInputs = { buttonPause, buttonMode };
 
     // Add all safety levels to the safety system
@@ -69,7 +67,7 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     // Add events to multiple safety levels
     addEventToAllLevelsBetween(slEmergency, slMotorPowerOn, abort, slShuttingDown, kPublicEvent);
     addEventToAllLevelsBetween(slSystemOn, slMotorPowerOn, emergency, slEmergency, kPublicEvent);
-    
+
     // Define input actions for all levels
     slSystemOff.setInputActions({           ignore(buttonPause),                    ignore(buttonMode) });
     slShuttingDown.setInputActions({        ignore(buttonPause),                    ignore(buttonMode) });
@@ -80,7 +78,6 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     slSystemOn.setInputActions({            check(buttonPause, false, emergency),   ignore(buttonMode) });
     slMotorPowerOn.setInputActions({        check(buttonPause, false, emergency),   ignore(buttonMode) });
     slSystemMoving.setInputActions({        check(buttonPause, false, emergency),   ignore(buttonMode) });
-
 
     // Define output actions for all levels
     slSystemOff.setOutputActions({           set(greenLED, false),   set(redLED, false) });
@@ -123,24 +120,24 @@ MyRobotSafetyProperties::MyRobotSafetyProperties(ControlSystem &cs, double dt)
     });
 
     slSystemOn.setLevelAction([&, dt](SafetyContext *privateContext) {
-        if (slSystemOn.getNofActivations()*dt >= 1)   // wait 1 sec
+        /*if (slSystemOn.getNofActivations()*dt >= 1)   // wait 1 sec
         {
             privateContext->triggerEvent(powerOn);
-        }
+        }*/
     });
 
     slMotorPowerOn.setLevelAction([&, dt](SafetyContext *privateContext) {
-        if (slMotorPowerOn.getNofActivations()*dt >= 5)   // wait 5 sec
+        /*if (slMotorPowerOn.getNofActivations()*dt >= 5)   // wait 5 sec
         {
             privateContext->triggerEvent(startMoving);
-        }
+        }*/
     });
 
     slSystemMoving.setLevelAction([&, dt](SafetyContext *privateContext) {
-        if (slSystemMoving.getNofActivations()*dt >= 5)   // wait 5 sec
+        /*if (slSystemMoving.getNofActivations()*dt >= 5)   // wait 5 sec
         {
             privateContext->triggerEvent(stopMoving);
-        }
+        }*/
     });
 
     // Define entry level
